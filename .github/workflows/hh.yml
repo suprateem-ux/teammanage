@@ -1,0 +1,19 @@
+name: Enable Kid Mode on Lichess
+
+on:
+  workflow_dispatch:  # You can run it manually
+  schedule:
+    - cron: '0 6 * * *'  # optional: run daily at 6 AM UTC
+
+jobs:
+  enable-kid-mode:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Enable Kid Mode
+        run: |
+          echo "Turning ON Kid Mode..."
+          curl -X POST "https://lichess.org/api/account/kid?v=true" \
+            -H "Authorization: Bearer ${{ secrets.LICHESS_KEY }}" \
+            -H "Content-Type: application/x-www-form-urlencoded" \
+            -w "\nResponse Code: %{http_code}\n"
