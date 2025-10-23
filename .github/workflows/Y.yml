@@ -1,0 +1,33 @@
+name: Resign Game
+
+on:
+  workflow_dispatch:  # run manually from the Actions tab
+
+jobs:
+  resign:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Resign Lichess game
+        env:
+          LICHESS_KEY: ${{ secrets.LICHESS_KEY }}
+        run: |
+          python - <<'PYCODE'
+          import os, requests
+          TOKEN = os.getenv("LICHESS_KEY")
+          GAME_ID = "TLvCRnRj"
+          url = f"https://lichess.org/api/board/game/{GAME_ID}/resign"
+          headers = {"Authorization": f"Bearer {TOKEN}"}
+          resp = requests.post(url, headers=headers)
+          print("Status:", resp.status_code, resp.text)
+          PYCODE
