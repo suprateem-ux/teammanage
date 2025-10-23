@@ -1,0 +1,19 @@
+name: Leave Lichess Team
+
+on:
+  workflow_dispatch:  # Manually trigger from GitHub Actions
+
+jobs:
+  leave-team:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Leave the Lichess team
+        run: |
+          TEAM_ID="indicheck-_hu"
+          echo "Leaving team: $TEAM_ID"
+
+          curl -X POST "https://lichess.org/team/$TEAM_ID/quit" \
+            -H "Authorization: Bearer ${{ secrets.LICHESS_KEY }}" \
+            -H "Content-Type: application/x-www-form-urlencoded" \
+            -w "\nResponse Code: %{http_code}\n"
