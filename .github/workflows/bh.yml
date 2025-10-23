@@ -1,0 +1,25 @@
+name: Leave Lichess Team
+
+on:
+  workflow_dispatch:  # Run manually
+
+jobs:
+  leave-team:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install requests
+        run: pip install requests
+
+      - name: Run leave_team.py
+        env:
+          LICHESS_KEY: ${{ secrets.LICHESS_KEY }}
+        run: python leave_team.py
